@@ -15,7 +15,18 @@ class ProcessModule {
      * The environment variables method.
      */
     envVars() {
-        console.log('Good morning');
+        // If NODE_ENV is not set then use production
+
+        const nodeEnv = process.env.NODE_ENV || 'production';
+
+        console.log(`NODE_ENV: ${nodeEnv}`);
+    }
+
+    /**
+     * The run external process method.
+     */
+    external() {
+        console.log('Run external processes');
     }
 }
 
