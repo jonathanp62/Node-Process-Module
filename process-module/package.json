@@ -1,0 +1,21 @@
+{
+  "name": "process-module",
+  "version": "1.0.0",
+  "description": "Work with the Process module",
+  "keywords": [
+    "node",
+    "learning",
+    "process",
+    "application"
+  ],
+  "repository": {
+    "type": "git"
+  },
+  "main": "src/index.mjs",
+  "bin": {
+    "run": "./src/index.mjs"
+  },
+  "author": "Jonathan Parker",
+  "license": "ISC",
+  "type": "module"
+}
