@@ -7,6 +7,8 @@
  * All Rights Reserved.
  */
 
+import { exec, execFile, fork, spawn } from 'child_process';
+
 /**
  * The process module class.
  */
@@ -23,10 +25,82 @@ class ProcessModule {
     }
 
     /**
-     * The run external process method.
+     * The child processes method.
+     *
+     * See: https://www.geeksforgeeks.org/how-can-we-run-an-external-process-with-node-js/#
      */
-    external() {
-        console.log('Run external processes');
+    childProcesses() {
+        this.spawn();
+        this.fork();
+        this.exec();
+        this.execFile();
+    }
+
+    /**
+     * Demonstrate the spawn child process.
+     */
+    spawn() {
+        const lsProcess = spawn('ls');
+
+        lsProcess.stdout.on('data', (data) => {
+            console.log(`ls stdout:\n${data}`);
+        });
+
+        lsProcess.stderr.on("data", (data) => {
+            console.log(`ls stderr: ${data}`);
+        });
+
+        lsProcess.on('exit', code => {
+            console.log(`ls process ended with ${code}`);
+        });
+    }
+
+    /**
+     * Demonstrate the fork child process. Like
+     * spawn, but parent and child can communicate
+     * using the send() method.
+     */
+    fork() {
+        const child = fork('src/child-file.mjs');
+
+        child.on('message', (msg) => {
+            console.log(`From child process: ${msg}`);
+        });
+
+        child.send('Hello from the parent process.');
+    }
+
+    /**
+     * Demonstrate the exec child process. It establishes a shell.
+     */
+    exec() {
+        exec('echo Hi from exec', (err, stdout, stderr) => {
+            if (err) {
+                console.error(err);
+            } else {
+                console.log(`stdout: ${stdout}`);
+            }
+        });
+    }
+
+    /**
+     * Demonstrate the execFile child process. It does not
+     * establish a shell and is therefore more efficient.
+     */
+    execFile() {
+        const pythonProcess = execFile('python3', ['src/hello.py']);
+
+        pythonProcess.stdout.on("data", (data) => {
+            console.log(`py3 stdout:\n${data}`);
+        });
+
+        pythonProcess.stderr.on("data", (data) => {
+            console.log(`py3 stderr: ${data}`);
+        });
+
+        pythonProcess.on("exit", (code) => {
+            console.log(`py3 process ended with ${code}`);
+        });
     }
 }
 

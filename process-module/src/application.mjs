@@ -20,7 +20,7 @@ class Application {
         const processModule = new ProcessModule();
 
         processModule.envVars();
-        processModule.external();
+        processModule.childProcesses();
     }
 }
 
